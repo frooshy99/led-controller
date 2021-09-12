@@ -44,6 +44,7 @@
   </head>
   <body>
 
+  <!--
       <div class="container">
           <h1>RGB LED Settings</h1>
 
@@ -98,9 +99,7 @@
           </div>
         </div>
     </div>
-
-
-<!--
+-->
 
     <h2>Status: <?php echo $isOn ? "ON" : "OFF"; ?></h2>
     <h2>Current mode: <?php echo $mode == "0x61" ? "Solid Color" : "Preset"; ?></h2>
@@ -181,7 +180,6 @@
      <input type="submit">
    </form>
 
--->
 
 
 
