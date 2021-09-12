@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <title>LED Controller</title>
+  </head>
+  <body>
+    {% for led in leds %}
+        {% if led.type is sameas 'lifx' %}
+            {% include "lifx.html" %}
+        {% else %}
+            {% include "magic.html" %}
+        {% endif %}
+    {% endfor %}
+
+  </body>
+</html>

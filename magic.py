@@ -110,35 +110,41 @@ def getStatus():
 
     return my_bytes
 
-def parse_status(data, json):
 
-	# data[0] = 0x81 always
-	deviceType = data[1]
-	isOn = data[2] == ON
-	mode = data[3]
-	#  data[4] = 0x23 always
-	speed = data[5]
-	red = data[6]
-	green = data[7]
-	blue = data[8]
-	ww = data[9]
-	wc = data[10]
-	# data[11] = 0x00 always
-	# data[12] = checksum
-
+def printStats(stats, json):
 	if json == True:
-		print('{"device_type": "', hex(deviceType), '", "is_on": ', str(isOn).lower(), ', "device_mode": "', hex(mode), '", "speed": "', speed, '","color": [', red, ', ', green, ', ', blue, ']}', sep="")
+		print('{"device_type": "', hex(stats.deviceType), '", "is_on": ', stats.power, ', "device_mode": "', hex(stats.mode), '", "speed": "', stats.speed, '","color": [', stats.red, ', ', stats.green, ', ', stats.blue, ']}', sep="")
 	else:
-		print('Device type: 0x%X' % deviceType)
-		print('Is on: %d' % isOn)
-		print('Device mode: 0x%X' % mode )
-		print('Speed: 0x%X' % speed )
-		print('Color (r,g,b): ({0}, {1}, {2})'.format(red , green , blue))
+		print('Device type: 0x%X' % stats.type)
+		print('Is on: %d' % stats.power)
+		print('Device mode: 0x%X' % stats.mode )
+		print('Speed: 0x%X' % stats.speed )
+		print('Color (r,g,b): ({0}, {1}, {2})'.format(stats.red , stats.green , stats.blue))
 
+
+def parse_status(data):
+
+	fields = {
+		# data[0] = 0x81 always
+		"type": data[1],
+		"power": "on" if data[2] == ON else "off",
+		"mode": data[3],
+		#  data[4]: 0x23, always
+		"speed": data[5],
+		"red": data[6],
+		"green": data[7],
+		"blue": data[8],
+		"ww": data[9],
+		"wc": data[10],
+		# data[11]: 0x00 always
+		# data[12]: checksum
+	}
+
+	return fields
 
 
 # send the message to get the status of the LED conroler
-def send_get_status(host, port, json):
+def send_get_status(host, port):
 
 	# Create a TCP/IP socket
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -160,7 +166,7 @@ def send_get_status(host, port, json):
 	    amount_received = len(data)
 	    #print(bytes(data).hex())
 	    #print('received "%d"' % amount_received)
-	    parse_status(data, json)
+	    return parse_status(data)
 
 	finally:
 	    #print('closing socket')
@@ -311,8 +317,8 @@ def main():
 	elif args.command == "mode":
 		send_set_mode(args.host, args.port, args.mode, args.speed)
 	elif args.command == "status":
-		send_get_status(args.host, args.port, args.json)
-
+		stats = send_get_status(args.host, args.port)
+		printStats(stats, args.json)
 
 
 if __name__ == '__main__':

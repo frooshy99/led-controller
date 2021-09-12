@@ -1,0 +1,47 @@
+<h2>Status: {{ led.status }}</h2>
+<h2>Current mode: {{ led.mode }}</h2>
+
+<form action="/setLED" method="post">
+ <input type="hidden" id="device" name="device" value="magic">
+
+ <select id="command" name="command">
+   <option value="other">Select Command</option>
+   <option value="color">color</option>
+   <option value="status">status</option>
+   <option value="mode">mode</option>
+ </select>
+
+ <select id="status" name="status">
+   <option value="on">on</option>
+   <option value="off">off</option>
+   <option value="other">test</option>
+ </select>
+
+ <select id="mode" name="mode">
+   <option value="0x25">SEVEN_COLOR_FADE</option>
+   <option value="0x26">RED_GRADUAL</option>
+   <option value="0x27">GREEN_GRADUAL</option>
+   <option value="0x28">BLUE_GRADUAL</option>
+   <option value="0x2C">WHITE_GRADUAL</option>
+   <option value="0x2D">RED_GREEN_FADE</option>
+   <option value="0x2E">RED_BLUE_FADE</option>
+   <option value="0x2F">GREEN_BLUE_FADE</option>
+   <option value="0x30">SEVEN_COLOR_STROBE</option>
+   <option value="0x31">RED_STROBE</option>
+   <option value="0x32">GREEN_STROBE</option>
+   <option value="0x33">BLUE_STROBE</option>
+   <option value="0x37">WHITE_STROBE</option>
+   <option value="0x38">SEVEN_COLOR_JUMP</option>
+ </select>
+ <label for="color">Select color for the LED's:</label>
+ <input type="color" id="color" name="color" value="{{ led.color }}"><br><br>
+
+
+ <div class="slidecontainer">
+ <label for="speed">Speed for the animation</label>
+ <input type="range" min="1" max="16" value="{{ led.speed }}" class="slider" id="speed" name="speed">
+</div>
+
+ <input type="submit">
+
+</form>

@@ -1,0 +1,29 @@
+<h1>LIFX LED Settings</h1>
+<h2>Status: {{ led.status }}</h2>
+
+<form action="/setLED" method="post">
+
+  <input type="hidden" id="device" name="device" value="lifx">
+
+  <select id="command" name="command">
+    <option value="color">color</option>
+    <option value="status">status</option>
+  </select>
+
+  <select id="status" name="status">
+    <option value="on">on</option>
+    <option value="off">off</option>
+  </select>
+
+  <div class="slidecontainer">
+    <label for="brightness">brightness for the light</label>
+    <input type="range" min="0" max="65535" value="{{ led.brightness }}" class="slider" id="brightness" name="brightness">
+  </div>
+
+  <div class="slidecontainer">
+    <label for="temp">color temp for the light</label>
+    <input type="range" min="2500" max="9000" value="{{ led.temp }}" class="slider" id="temp" name="temp">
+  </div>
+
+  <input type="submit">
+</form>
